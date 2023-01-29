@@ -18,13 +18,13 @@ class PostController extends Controller
             [
                 "id" => 2,
                 "title" => 'Laravel',
-                "posted-by" => 'Elsayeh',
+                "posted-by" => 'Mahmoud',
                 "created-at" => '28/1/2023'
             ],
             [
                 "id" => 3,
                 "title" => 'Node',
-                "posted-by" => 'Abd Elzaher',
+                "posted-by" => 'Abd Elkarim',
                 "created-at" => '28/1/2023'
             ]
         ];
