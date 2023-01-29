@@ -6,33 +6,55 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function index(){
-        $allPosts = [
+    public function index()
+    {
+        $allposts = [
             [
-                'id' => 1,
-                'title' => 'laravel',
-                'description' => 'this is a post',
-                'posted_by' => 'mohamed',
-                'created_at' => '2022-01-28 19:10:22'
+                "id" => 1,
+                "title" => 'PHP',
+                "posted-by" => 'Mohamed',
+                "created-at" => '28/1/2023'
             ],
             [
-                'id' => 2,
-                'title' => 'nodejs',
-                'description' => 'this is a post',
-                'posted_by' => 'mohamed',
-                'created_at' => '2022-01-28 19:10:22'
+                "id" => 2,
+                "title" => 'Laravel',
+                "posted-by" => 'Elsayeh',
+                "created-at" => '28/1/2023'
             ],
             [
-                'id' => 3,
-                'title' => 'Django',
-                'description' => 'this is a post',
-                'posted_by' => 'mohamed',
-                'created_at' => '2022-01-28 19:10:22'
+                "id" => 3,
+                "title" => 'Node',
+                "posted-by" => 'Abd Elzaher',
+                "created-at" => '28/1/2023'
             ]
         ];
-        // dd($allPosts);
-        return view(view: 'index',data: [
-            'posts'=>$allPosts,
+        return view('posts.index', [
+            'posts' => $allposts
         ]);
+    }
+
+    public function create()
+    {
+        return view('posts.create');
+    }
+
+    public function store()
+    {
+        return redirect('/posts');
+    }
+
+    public function show($id)
+    {
+        return view('posts.show');
+    }
+
+    public function edit($id)
+    {
+        return view('posts.edit');
+    }
+
+    public function update($id)
+    {
+        return redirect('/posts');
     }
 }
