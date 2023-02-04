@@ -36,14 +36,10 @@ class PostController extends Controller
 
     public function show($postId){
 
-        $postsFromDB = Post::all();
-        foreach ($postsFromDB as $key => $value) {
-            if($value['id'] == $postId){
+        $singlePost = Post::findOrFail($postId);
+        return view(view:'posts.show',data:['show'=>$singlePost]);
 
-                return view(view:'posts.show',data:['show'=>$value]);
-            } 
-            
-        }
+
     }
     public function edit($postId){
         $singlePost = Post::findOrFail($postId);
