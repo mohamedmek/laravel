@@ -1,28 +1,40 @@
-@extends('layouts.nav')
-@section('title', 'Posts')
-@section('csspath')
-    <link rel="stylesheet" href="{{asset('css/create.css')}}">
+@extends('layouts.app')
+@section('title')
+    edit
 @endsection
-@section('page-content')
+@section('content')
 
-    <h1>Update Post</h1>
-    <form method="put" action="/posts/">
+<div style="width: 50%;" class="m-2">
+    <form method="POST" action="{{route('posts.update',$edit['id'])}}">
         @csrf
-        <div class="name">
-            <p>Title<span class="required">*</span></p>
-            <input type="text" name="title">
+        @method('PUT')
+        <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input type="text" class="form-control" name="title" value="{{$edit['title']}}">
         </div>
-        <div class="email">
-            <p>Description<span class="required">*</span></p>
-            <textarea name="description"></textarea>
+        <div class="mb-3">
+            <label  class="form-label">Description</label>
+            <textarea
+                name="desc"
+                class="form-control"
+            >{{$edit['description']}}</textarea>
+            {{-- <input type="text" name="desc"
+            class="form-control"
+            value="{{$edit['description']}}"> --}}
         </div>
-        <div class="crated-at">
-            <p>Crated At<span class="required">*</span></p>
-            <input type="text" name="crated-at">
+        <div class="mb-3">
+            <label class="form-check-label">Post Creator</label>
+    
+            <select class="form-control" name="creator">
+                <option>Mohamed</option>
+                <option>Ahmad</option>
+                <option>Mahmoud</option>
+                <option selected="selected">{{$edit['author']}}</option>
+            </select>
         </div>
-        <div class="form-btns">
-            <a href="/posts/1" class="update-post-btn">Update</a>
-        </div>
-</form>
+        <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+</div>
+@endsection 
 
-@endsection
+
