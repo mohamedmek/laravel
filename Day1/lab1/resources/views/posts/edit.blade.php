@@ -18,18 +18,14 @@
                 name="desc"
                 class="form-control"
             >{{$edit['description']}}</textarea>
-            {{-- <input type="text" name="desc"
-            class="form-control"
-            value="{{$edit['description']}}"> --}}
         </div>
         <div class="mb-3">
             <label class="form-check-label">Post Creator</label>
     
-            <select class="form-control" name="creator">
-                <option>Mohamed</option>
-                <option>Ahmad</option>
-                <option>Mahmoud</option>
-                <option selected="selected">{{$edit['author']}}</option>
+            <select class="form-control" name="user_id">
+                @foreach ($users as $user)
+                    <option value="{{$user->id}}" @if ($user->id == $edit->user_id) selected @endif>{{$user->name}}</option>
+                @endforeach
             </select>
         </div>
         <button type="submit" class="btn btn-success">Submit</button>

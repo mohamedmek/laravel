@@ -24,7 +24,8 @@
             <th scope="row">{{$posts['id']}}</th>
             <td>{{$posts['title']}}</td>
             {{-- <td>{{$posts['description']}}</td> --}}
-            <td>{{$posts['author']}}</td>
+            <td>{{$posts->user ? $posts->user->name : 'user not found'}}</td>
+            
             <td>{{$posts->created_at->format('Y-m-d')}}</td>
             <td>
                 <a href="{{route('posts.show',$posts['id'])}}" class="btn btn-info">View</a>
@@ -42,7 +43,7 @@
 {{-- <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModal" role="button">Open first modal</a> --}}
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+{{-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -60,6 +61,6 @@
       </div>
     </div>
   </div>
-</div>
+</div> --}}
 
 @endsection
