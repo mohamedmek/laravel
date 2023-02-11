@@ -8,6 +8,15 @@
     <form method="POST" action="{{route('posts.update',$edit['id'])}}">
         @csrf
         @method('PUT')
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="mb-3">
             <label class="form-label">Title</label>
             <input type="text" class="form-control" name="title" value="{{$edit['title']}}">
