@@ -12,13 +12,18 @@ class PostController extends Controller
     
     public function index(){
 
-        $postsFromDB = Post::all();
-        return view(view:'posts.index', data:['posts'=>$postsFromDB]);
+        // $postsFromDB = Post::all()->paginate(6);
+        $postsFromDB = Post::Paginate(10);
+        // $postsFromDB = Post::all();
+        
+        // dd($postsFromDB);
+        return view(view:'posts.index', data:['posts'=>$postsFromDB ]);
         
     }
 
     public function create(){
         $users = User::all();
+        
         return view(view: 'posts.create',data:['users'=>$users]);
     }
 
