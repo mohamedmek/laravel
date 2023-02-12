@@ -40,6 +40,8 @@
     @endforeach
   </tbody>
 </table>
+{{-- // --}}
+
 {{-- <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModal" role="button">Open first modal</a> --}}
 
 <!-- Modal -->
