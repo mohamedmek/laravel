@@ -13,17 +13,10 @@ class PostController extends Controller
     public function index(){
         
         $posts= Post::all();
-        // $response =[];
 
-        // foreach($posts as $post){
-        //     $response []=[
-        //         'id' => $post->id,
-        //         'title' => $post->title,
-        //         'description'=> $post->description,
-        //     ];
-        // }
-        // return $response;
-        return PostResource::collection($posts);
+
+        return PostResource::collection(Post::with('user')->get()->paginate(2));
+
     }
 
     public function show($postId){
@@ -33,8 +26,6 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request)
     {
-        //  dd($request->all());
-        //$path = Storage::putFile('public', $request->file('image'));
         $data = $request->all();
         $title = $data['title'];
         $description = $data['description'];
@@ -44,9 +35,7 @@ class PostController extends Controller
             'title' => $title,
             'description' => $description,
             'user_id' => $userId,
-            //'image' => $path
         ]);
-        // return to_route('posts.index');
         return $post;
     }
 }

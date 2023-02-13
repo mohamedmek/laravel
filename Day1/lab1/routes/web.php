@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
+
+use Laravel\Socialite\Facades\Socialite;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -47,6 +50,44 @@ Route::post('/posts/{post}/comment', [CommentController::class, 'store'])->name(
 
 Auth::routes();
 
-
+ 
+Route::get('/auth/redirect', function () {
+    return Socialite::driver('github')->redirect();
+});
+ 
+Route::get('/auth/callback', function () {
+    $user = Socialite::driver('github')->user();
+ 
+    // $user->token
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+// Route::get('/auth/redirect',function(){
+//     return Socialite::driver('google')->redirect();
+
+// });
+
+
+// Route::get('/auth/callback',function(){
+//     $userdata = Socialite::driver('google')->user();
+//         $user = User::where('email', $userdata->email)->where('auth_type','google')->first();
+//         if (!$user) {
+//             $uuid=Str::uuid()->toString();
+//             $user = new User();
+//             $user->name = $userdata->name;
+//             $user->email = $userdata->email;
+//             $user->password = Hash::make($uuid.now());
+//             $user->auth_type = 'google';
+//             $user->save();
+//             Auth::login($user);
+//             return redirect('/home');
+//             }
+
+//         else{
+//             Auth::login($user);
+//             return redirect('/home');
+//         }
+// });
