@@ -10,16 +10,26 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Support\Facades\Storage;
 use  Illuminate\Support\Facades\File;
+use App\Jobs\PruneOldPostsJob;
+use Illuminate\Support\Facades\Date;
 class PostController extends Controller
 {
     
-    public function index(){
+    
 
-        $postsFromDB = Post::Paginate(10);
-        
-        return view(view:'posts.index', data:['posts'=>$postsFromDB ]);
-        
+    public function index()
+    {
+        dispatch(
+            new PruneOldPostsJob (
+                Date::now()->subDays(365*2)
+            ));
+
+        $postsFromDB = Post::with('user')->paginate(10);
+        return view('posts.index',[
+            'posts' => $postsFromDB ,
+        ]);
     }
+
 
     public function create(){
         $users = User::all();
