@@ -6,16 +6,29 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Resources\PostResource;
 
 class PostController extends Controller
 {
     public function index(){
         
-        return Post::all();
+        $posts= Post::all();
+        // $response =[];
+
+        // foreach($posts as $post){
+        //     $response []=[
+        //         'id' => $post->id,
+        //         'title' => $post->title,
+        //         'description'=> $post->description,
+        //     ];
+        // }
+        // return $response;
+        return PostResource::collection($posts);
     }
 
     public function show($postId){
-        return Post::findOrFail($postId);
+        $post = Post::findOrFail($postId);
+        return new PostResource($post);
     }
 
     public function store(StorePostRequest $request)
