@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
-
+use App\Http\Controllers\CommentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,12 +30,19 @@ Route::post('/posts', [PostController::class, 'store']);
 Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
 
 
-Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
 Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
 
 Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
+
+Route::get('/posts/restore', [PostController::class, 'restore'])->name('posts.restore');
+
+Route::get('/posts/{post}/reback', [PostController::class, 'reback'])->name('posts.reback');
+
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
+Route::post('/posts/{post}/comment', [CommentController::class, 'store'])->name('comments.store');
 });
 
 Auth::routes();

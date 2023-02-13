@@ -1,12 +1,11 @@
 @extends('layouts.app')
-@section('title')
-    create
-@endsection
-@section('content')
 
-<div style="width: 50%;" class="m-2">
-    <form method="POST" action="/posts">
-        @csrf
+@section('title')
+    Create
+@endsection
+
+@section('content')
+    <div class="container">
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -16,27 +15,36 @@
                 </ul>
             </div>
         @endif
-        <div class="mb-3">
-            <label class="form-label">Title</label>
-            <input type="text" class="form-control" name="title">
-        </div>
-        <div class="mb-3">
-            <label  class="form-label">Description</label>
-            <textarea
-                name="description"
-                class="form-control"
-            ></textarea>
-        </div>
-        <div class="mb-3">
-            <label class="form-check-label">Post Creator</label>
-            
-            <select class="form-control" name="user_id">
-                @foreach ($users as $user)
-                <option value="{{$user->id}}">{{$user->name}}</option>
-                @endforeach
-            </select>
-        </div>
-        <button type="submit" class="btn btn-success">Submit</button>
-    </form>
-</div>
+
+        <form method="POST" action="/posts" enctype="multipart/form-data">
+            @csrf
+
+
+            <div class="mb-3" style="margin-top: 20px">
+                <h4><label class="form-label fw-bold">Title</label></h4>
+                <input type="text" name="title" class="form-control" style="width: 70%; height:40px">
+            </div>
+
+
+            <div class="mb-3">
+                <h4><label class="form-label fw-bold">Description</label></h4>
+                <textarea class="form-control" style="height: 100px " name="description"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <h4><label class="form-label fw-bold">Creator</label></h4>
+                <select name="post_creator" class="form-control">
+                    @foreach ($users as $user)
+                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    @endforeach
+                </select>
+
+            </div>
+            {{-- <a href="{{route('posts.update', $post['id'])}}" class="btn btn-primary">Edit</a> --}}
+            <input class="form-control mb-3" type="file" name="image">
+            <center>
+                <button type="submit" class="btn-success btn fs-6 " style=" ">Submit</button>
+            </center>
+        </form>
+    </div>
 @endsection

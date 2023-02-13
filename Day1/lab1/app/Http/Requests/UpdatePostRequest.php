@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StorePostRequest extends FormRequest
+class UpdatePostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +25,9 @@ class StorePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required','min:3','unique:posts'],
-            'description'  => ['required','max:255'],
+            'title'=>['required','min:3','unique:posts,title,'. $this->route()->post],
+            'description'=>['required','min:10'],
+            'user_id'=>[Rule::in('post_creator','user_id')],
         ];
-    }
-
-    public function messages()
-    {
-        return ['description.max'=>'description maximum is 255'];
     }
 }

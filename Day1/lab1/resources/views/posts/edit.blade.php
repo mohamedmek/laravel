@@ -24,7 +24,7 @@
         <div class="mb-3">
             <label  class="form-label">Description</label>
             <textarea
-                name="desc"
+                name="description"
                 class="form-control"
             >{{$edit['description']}}</textarea>
         </div>
@@ -37,6 +37,7 @@
                 @endforeach
             </select>
         </div>
+        <input class="form-control mb-3" type="file" name="image">
         <button type="submit" class="btn btn-success">Submit</button>
     </form>
 </div>

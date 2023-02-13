@@ -1,25 +1,66 @@
+
+
 @extends('layouts.app')
 @section('title')
-    show
+    Show
 @endsection
 @section('content')
+    <div class="container">
+        <center>
+            <div class="card mb-3 mt-3 ">
+                <div class="row g-0">
+                    <div>
+                        @if ($post->image)
+                            <img src="{{ Storage::url($post->image) }}" class="img-fluid rounded-start rounded-0"
+                                style="height: 350px ; width:100%">
+                        @endif
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body" style="text-align: left">
+                            <h2 class="card-title fw-bold">{{ $post->title ?? 'Not Found' }}</h2>
+                            <hr>
+                            <p class="card-text">{{ $post->description ?? 'Not Found' }}.</p>
+                            <p class="card-text">{{ $post->user->name ?? 'Not Found' }}<small class="text-muted ">
+                                    {{ $post->created_at ? $post->created_at->format('jS \o\f F, Y g:i:s a') : 'NULL' }}</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-{{-- <div style="width: 50%;" class="m-2"> --}}
-    <div style=" border:3px solid black; padding:5px;margin-top:10%; width:500px;margin-left:25%">
-        <h1  style="margin-left:26%;">Information</h1><br>
-        <span style="font-weight: bold">Title:</span> 
-        {{-- {{ $post['title'] }} --}}
-        {{$show['title']}}
-        <br><br>
-        <span style="font-weight: bold">Description:</span> 
-        {{-- {{ $post['description'] }} --}}
-        {{$show['description']}}
-        <br><br>
-        <span style="font-weight: bold">Posted_by:</span> 
-        {{-- {{ $post['posted_by'] }} --}}
-        {{$show['author']}}
+            <div class="row">
+                <div class="col">
+                    @if ($post->comments)
+                        @foreach ($post->comments as $comment)
+                            <div class="card mb-2" style="width: 80%">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <label class="form-label">
+                                            <h4>Comment #{{ $comment->id }}</h4>
+                                            <hr><strong>{{ $comment->body }}</strong><br>
+
+                                            {{ $post->user->name }}, {{ $comment->created_at->format('20y-m-d') }}
+                                        </label>
+                                        <br>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        @endforeach
+                    @endif
+
+                    <div class="col">
+                        <form method="POST" action="{{ route('comments.store', $post->id) }}">
+                            @csrf
+                            <textarea class="form-control" placeholder="Add Your Thoughts ..." name="body"
+                                style="width: 70%; height:100px;"></textarea>
+                            <button type="submit" class="btn-success btn mt-2 text-light"
+                                style="width:70%;">Add Comment</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </center>
     </div>
-{{-- </div> --}}
-@endsection 
-
-
+@endsection

@@ -7,16 +7,16 @@ use App\Models\Post;
 use App\Models\User;
 use Symfony\Contracts\Service\Attribute\Required;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
+use Illuminate\Support\Facades\Storage;
+use  Illuminate\Support\Facades\File;
 class PostController extends Controller
 {
     
     public function index(){
 
-        // $postsFromDB = Post::all()->paginate(6);
         $postsFromDB = Post::Paginate(10);
-        // $postsFromDB = Post::all();
         
-        // dd($postsFromDB);
         return view(view:'posts.index', data:['posts'=>$postsFromDB ]);
         
     }
@@ -27,49 +27,29 @@ class PostController extends Controller
         return view(view: 'posts.create',data:['users'=>$users]);
     }
 
-    public function store(StorePostRequest $request){
-
-        // $data = request();
-
-        // request() ->validate([
-        //     'title' => ['required','min:5'],
-        //     'desc'  => ['required','max:255'],
-        // ],
-        // ['desc.max'=>'description maximum is 255']
-        // );
-        // $title = request()->title;
-        // $description = request()->desc;
-        // $posted_by = request()->user_id;
-
-        // $post = Post::create([
-        //     'title' => $title,
-        //     'description' => $description,
-        //     'user_id' => $posted_by
-        // ]);
-        
-        // return redirect('/posts');
-
-
+    public function store( StorePostRequest $request)
+    {
+        //  dd($request->all());
+        $path = Storage::putFile('public', $request->file('image'));
         $data = $request->all();
-
         $title = $data['title'];
         $description = $data['description'];
-        $userId = $data['user_id'];
+        $userId = $data['post_creator'];
 
-        //store the form data inside the database
         Post::create([
             'title' => $title,
             'description' => $description,
             'user_id' => $userId,
+            'image' => $path
         ]);
-
         return to_route('posts.index');
     }
+
 
     public function show($postId){
 
         $singlePost = Post::findOrFail($postId);
-        return view(view:'posts.show',data:['show'=>$singlePost]);
+        return view(view:'posts.show',data:['post'=>$singlePost]);
 
 
     }
@@ -80,28 +60,50 @@ class PostController extends Controller
 
 
     }
-    public function update($post,Request $request){
 
 
-        $request->validate([
-            'title' => ['Required','min:5'],
-            'desc'  => ['required','max:255'],
-        ]);
+    public function update($post,UpdatePostRequest $request){
 
         $singlePost = Post::findOrFail($post);
+
+        if ($request->exists('image')) {
+            $path = Storage::putFile('public', $request->file('image'));
+            if($singlePost->image){
+                Storage::delete($post->image);
+        }}
+        else{
+            $path=null;
+        }
+
         $singlePost->update([
             'title' => $request->title,
-            'description' => $request->desc,
-            'user_id' => $request->user_id
+            $singlePost->slug = null,
+            'description' => $request->description,
+            'user_id' => $request->user_id,
+            $singlePost->image = $path,
         ]);
         return redirect()->route('posts.index');
     }
+
     public function destroy($post){
-        // Post::where('id',$post)->delete(); // delete in single line
         $singlePost = Post::findOrFail($post);
         $singlePost->delete();
         return redirect()->route('posts.index');
     }
+
+
+        public function restore()
+        {
+            $allPosts = Post::onlyTrashed()->get();
+            return view('posts.restore', ['posts' => $allPosts,]);
+        }
+
+
+        public function reback($postId)
+        {
+            Post::whereId($postId)->restore();
+            return back();
+        }
 }
 
 
