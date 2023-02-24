@@ -71,23 +71,23 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // });
 
 
-// Route::get('/auth/callback',function(){
-//     $userdata = Socialite::driver('google')->user();
-//         $user = User::where('email', $userdata->email)->where('auth_type','google')->first();
-//         if (!$user) {
-//             $uuid=Str::uuid()->toString();
-//             $user = new User();
-//             $user->name = $userdata->name;
-//             $user->email = $userdata->email;
-//             $user->password = Hash::make($uuid.now());
-//             $user->auth_type = 'google';
-//             $user->save();
-//             Auth::login($user);
-//             return redirect('/home');
-//             }
+Route::get('/auth/callback',function(){
+    $userdata = Socialite::driver('google')->user();
+        $user = User::where('email', $userdata->email)->where('auth_type','google')->first();
+        if (!$user) {
+            $uuid=Str::uuid()->toString();
+            $user = new User();
+            $user->name = $userdata->name;
+            $user->email = $userdata->email;
+            $user->password = Hash::make($uuid.now());
+            $user->auth_type = 'google';
+            $user->save();
+            Auth::login($user);
+            return redirect('/home');
+            }
 
-//         else{
-//             Auth::login($user);
-//             return redirect('/home');
-//         }
-// });
+        else{
+            Auth::login($user);
+            return redirect('/home');
+        }
+});
